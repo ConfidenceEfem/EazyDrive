@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from "styled-components"
 import SignUpHeader from './SignUpHeader'
 import * as yup from "yup"
@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom"
 
 const SignUp = () => {
 
-    const [loading, setLoading] = useState(false)
+    // const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
 
@@ -18,7 +18,7 @@ const SignUp = () => {
         password: yup.string().required("Please input your password")
     })
 
-    const {register, handleSubmit, formState: {errors}, reset} = useForm({resolver: yupResolver(schema)})
+    const {register, handleSubmit} = useForm({resolver: yupResolver(schema)})
 
     const submit = handleSubmit((data)=>{
         console.log(data)
