@@ -10,7 +10,11 @@ const SignUpHeader = () => {
   return (
     <Container>
         <Wrapper>
-            <Logo src={`/images/eazylogo.png`}/>
+            <Logo src={`/images/eazylogo.png`}
+             onClick={()=>{
+                navigate(`/`)
+            }} 
+            />
             <RightItems>
                 <Div>Already have an account?</Div>
                 <Button
@@ -48,6 +52,7 @@ align-items: center;
 const Logo = styled.img`
 /* width: 150px; */
 /* background-color: red; */
+cursor: pointer;
 height: 90px;
 object-fit: contain;
 `
