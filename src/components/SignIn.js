@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from "styled-components"
-import SignUpHeader from './SignUpHeader'
 import * as yup from "yup"
 import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
 import {useNavigate} from "react-router-dom"
+import LandingHeader from './LandingHeader'
 
 const SignIn = () => {
 
@@ -25,7 +25,7 @@ const SignIn = () => {
 
   return (
     <Container>
-        <SignUpHeader/>
+        <LandingHeader/>
         <BodyItems>
             <ContentItems>
                 <Caption>Welcome, Log In to your account</Caption>

@@ -6,14 +6,13 @@ import {yupResolver} from "@hookform/resolvers/yup"
 import {useNavigate} from "react-router-dom"
 import LandingHeader from './LandingHeader'
 
-const SignUp = () => {
+const SignInAsUser = () => {
 
     // const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
 
     const schema = yup.object().shape({
-        fullName: yup.string().required("This field is required"),
         email: yup.string().email().required("Please input your email"),
         password: yup.string().required("Please input your password")
     })
@@ -24,33 +23,29 @@ const SignUp = () => {
         console.log(data)
     })
 
-
-
-
   return (
     <Container>
         <LandingHeader/>
         <BodyItems>
             <ContentItems>
-                <Caption>Create a Free Account as A Car Owner</Caption>
+                <Caption>Welcome, Log In to your account</Caption>
                 <SubCap>
-                    <Div>Already have an account?</Div>
+                    <Div>Don't have an account?</Div>
                     <SignUpButton
                     onClick={()=>{
-                        navigate(`/signin-carowner`)
+                        navigate("/signup-hirer")
                     }}
-                    >Sign In as a Car Owner</SignUpButton>
+                    >Sign Up to Hire a Car</SignUpButton>
                 </SubCap>
             </ContentItems>
             <FormHolder>
                 <FormItems onSubmit={submit}>
                     <InputHolders>
-                    <Input placeholder="Your Full Name" {...register("fullName")}/>
                     <Input placeholder="Your Email" {...register("email")}/>
                     <Input placeholder="Your Password" type={"password"} {...register("password")}/>
                     </InputHolders>
                     <ButtonHolders>
-                        <CreateAccount type='submit'>Create Account</CreateAccount>
+                        <CreateAccount type='submit'>Log In</CreateAccount>
                         <SubText>By Clicking "Create Account", I agree to EazyDrive Terms of Service</SubText>
                     </ButtonHolders>
                 </FormItems>
@@ -61,7 +56,7 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default SignInAsUser
 
 const SubText = styled.div`
 font-size: 12px;
@@ -69,7 +64,7 @@ color: gray;
 `
 
 const CreateAccount = styled.button`
-font-size: 13px;
+font-size: 15px;
 font-weight: 600;
 color: white;
 font-family: poppins;

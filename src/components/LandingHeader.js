@@ -15,7 +15,11 @@ const LandingHeader = () => {
         }}
         />
         <RightItems>
-            <Div>Hire a Car</Div>
+            <Div
+            onClick={()=>{
+                navigate(`/signin-hirer`)
+            }}
+            >Hire a Car</Div>
             <Button
             onClick={()=>{
                 navigate(`/signin-carowner`)
@@ -79,4 +83,6 @@ display:flex;
 align-items: center;
 justify-content: center;
 box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+position: sticky;
+/* margin-bottom: 50px; */
 `

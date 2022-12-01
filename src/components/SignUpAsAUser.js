@@ -6,7 +6,7 @@ import {yupResolver} from "@hookform/resolvers/yup"
 import {useNavigate} from "react-router-dom"
 import LandingHeader from './LandingHeader'
 
-const SignUp = () => {
+const SignUpAsAUser = () => {
 
     // const [loading, setLoading] = useState(false)
 
@@ -32,14 +32,14 @@ const SignUp = () => {
         <LandingHeader/>
         <BodyItems>
             <ContentItems>
-                <Caption>Create a Free Account as A Car Owner</Caption>
+                <Caption>Create a Free Account to Hire a Car</Caption>
                 <SubCap>
                     <Div>Already have an account?</Div>
                     <SignUpButton
                     onClick={()=>{
-                        navigate(`/signin-carowner`)
+                        navigate(`/signin-hirer`)
                     }}
-                    >Sign In as a Car Owner</SignUpButton>
+                    >Sign In to Hire a Car</SignUpButton>
                 </SubCap>
             </ContentItems>
             <FormHolder>
@@ -61,7 +61,7 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default SignUpAsAUser
 
 const SubText = styled.div`
 font-size: 12px;
