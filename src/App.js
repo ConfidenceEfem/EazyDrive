@@ -6,12 +6,14 @@ import LandingPage from './components/LandingPage'
 import SignInAsUser from './components/SignInAsUser'
 import SignUpAsAUser from './components/SignUpAsAUser'
 import UserOtpVerify from './components/UserOtpVerfiy'
+import DashboardScreenPage from './components/carownerdashboard/DashboardScreenPage'
 
 const App = () => {
   return (
     <div>
       <Router>
         <Routes>
+          <Route path="/dashboard-carowner" element={<DashboardScreenPage/>}/>
           <Route path="/otpverify-hirer" element={<UserOtpVerify/>}/>
           <Route path="/signup-hirer" element={<SignUpAsAUser/>}/>
           <Route path="/signup-carowner" element={<SignUp/>}/>
