@@ -1,16 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components"
 import * as yup from "yup"
 import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
 import {useNavigate} from "react-router-dom"
 import LandingHeader from './LandingHeader'
+import Swal from 'sweetalert2'
+import { ErrorFunction } from './Error'
+import axios from 'axios'
+import { SyncLoader } from 'react-spinners'
+import { addCurrentUser } from './Redux/EarliReducers'
+import { useDispatch } from 'react-redux'
 
 const SignIn = () => {
 
-    // const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     const schema = yup.object().shape({
         email: yup.string().email().required("Please input your email"),
@@ -19,8 +27,39 @@ const SignIn = () => {
 
     const {register, handleSubmit} = useForm({resolver: yupResolver(schema)})
 
-    const submit = handleSubmit((data)=>{
-        console.log(data)
+    const submit = handleSubmit(async (data)=>{
+        try {
+
+            setLoading(true)
+
+       const { email, password} = data
+       const res = await axios.post("/api/sign/owner", {
+        email, password
+       })
+       if(res){
+           setLoading(false)
+           Swal.fire({
+               position: 'center',
+               icon: 'success',
+               title: `Log In Successfully`,
+               showConfirmButton: false,
+               timer: 2500,
+             }).then(() => {
+                dispatch(addCurrentUser(res?.data?.data))
+               navigate(`/dashboard-carowner/${res?.data?.data?.data?._id}`);
+             });
+       }
+       } catch (error) {
+           // console.log(error)
+           setLoading(false)
+           Swal.fire({
+               position: 'center',
+               icon: 'error',
+               title: `${ErrorFunction(error)}`,
+               showConfirmButton: false,
+               timer: 2500,
+             });
+       }
     })
 
   return (
@@ -45,7 +84,13 @@ const SignIn = () => {
                     <Input placeholder="Your Password" type={"password"} {...register("password")}/>
                     </InputHolders>
                     <ButtonHolders>
+                       {loading === false?
                         <CreateAccount type='submit'>Log In</CreateAccount>
+                        :
+                        <CreateAccount type='submit'>
+                            <SyncLoader color="white" margin={4}size={8}/>
+                        </CreateAccount>}
+
                         <SubText>By Clicking "Create Account", I agree to EazyDrive Terms of Service</SubText>
                     </ButtonHolders>
                 </FormItems>

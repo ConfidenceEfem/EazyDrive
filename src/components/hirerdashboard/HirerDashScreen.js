@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import styled from "styled-components"
 
 
-const DashboardScreen = () => {
+const HirerDashScreen = () => {
 
     const [data, setData] = useState([])
 
@@ -96,7 +96,7 @@ const DashboardScreen = () => {
   )
 }
 
-export default DashboardScreen
+export default HirerDashScreen
 
 const DisplayText = styled.div``
 const DeleteIcon = styled.div`

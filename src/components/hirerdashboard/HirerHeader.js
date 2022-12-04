@@ -5,7 +5,7 @@ import { AiOutlineMore, AiTwotoneBell } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 
-const DashHeader = () => {
+const HirerHeader = () => {
 
     const [data, setData] = useState([])
 
@@ -18,7 +18,8 @@ const DashHeader = () => {
         setData(res?.data?.data)
     }
 
-    useEffect(()=>{
+    useEffect(()=>{  
+      
         getOneUser()
     })
 
@@ -53,7 +54,7 @@ const DashHeader = () => {
   )
 }
 
-export default DashHeader
+export default HirerHeader
 
 const DotIcon = styled.div`
 cursor: pointer;

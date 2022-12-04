@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from "styled-components"
 import {useNavigate} from "react-router-dom"
 import LandingHeader from './LandingHeader'
-import { useDispatch, useSelector } from 'react-redux'
-import Swal from 'sweetalert2'
 import { ErrorFunction } from './Error'
-import { addCurrentUser } from './Redux/EarliReducers'
 import axios from 'axios'
+import Swal from 'sweetalert2'
+import { useDispatch, useSelector } from 'react-redux'
 import { SyncLoader } from 'react-spinners'
+import { addCurrentUser } from './Redux/EarliReducers'
 
-const UserOtpVerify = () => {
+const CarOwnerOtp = () => {
 
     const [loading, setLoading] = useState(false)
 
@@ -26,46 +26,45 @@ const UserOtpVerify = () => {
   
     const dispatch = useDispatch()
 
-   
-
-    const verifyAccount = async () => {
-      try {
-          setLoading(true)
-          const res = await axios.post("/api/verify/user", {
-              email: email,
-              password: password,
-              fullName: fullName,
-              otp: (num + num1 + num2 + num3)
-          })
-          if(res){
-              console.log(res)
-              setLoading(false)
-              Swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: `Account Created Successfully`,
-                  showConfirmButton: false,
-                  timer: 2500,
-                }).then(() => {
-                  dispatch(addCurrentUser(res?.data?.data))
-                  navigate(`/dashboard-hirer/${res?.data?.data?.data?._id}`);
-                });
-          }
-      } catch (error) {
-          setLoading(false)
-          Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: `${ErrorFunction(error)}`,
-              showConfirmButton: false,
-              timer: 2500,
-            })
-      }
-  }
-
-
     const inputRef = useRef(null);
     const [activeBox, setActiveBox] = useState(1);
+
+
+
+    const verifyAccount = async () => {
+        try {
+            setLoading(true)
+            const res = await axios.post("/api/verify", {
+                email: email,
+                password: password,
+                fullName: fullName,
+                otp: (num + num1 + num2 + num3)
+            })
+            if(res){
+                console.log(res)
+                setLoading(false)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `Account Created Successfully`,
+                    showConfirmButton: false,
+                    timer: 2500,
+                  }).then(() => {
+                    dispatch(addCurrentUser(res?.data?.data))
+                    navigate(`/dashboard-carowner/${res?.data?.data?.data?._id}`);
+                  });
+            }
+        } catch (error) {
+            setLoading(false)
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `${ErrorFunction(error)}`,
+                showConfirmButton: false,
+                timer: 2500,
+              })
+        }
+    }
   
    
   useEffect(() => {
@@ -174,7 +173,7 @@ const UserOtpVerify = () => {
                        
                     </InputHolders>
                     <ButtonHolders>
-                    {loading === false? 
+                        {loading === false? 
                         <CreateAccount onClick={verifyAccount}>Verify Account</CreateAccount>
                         :
                         <CreateAccount>
@@ -190,7 +189,7 @@ const UserOtpVerify = () => {
   )
 }
 
-export default UserOtpVerify
+export default CarOwnerOtp
 
 const SubText = styled.div`
 font-size: 12px;

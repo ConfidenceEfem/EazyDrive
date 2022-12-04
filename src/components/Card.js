@@ -2,18 +2,18 @@ import React from 'react'
 import styled from "styled-components"
 import {GoLocation} from "react-icons/go"
 
-const Card = () => {
+const Card = ({props}) => {
   return (
     <Container>
-        <Image src="/images/car.png"/>
-        <Model>Black Toyota 56BM</Model>
+        <Image src={props?.carImage}/>
+        <Model>{props?.carModel}</Model>
         <Location>
             <Icon>
                 <GoLocation/>
             </Icon>
-            <City>Awka</City>
+            <City>{props?.city}</City>
         </Location>
-            <Price>N5000</Price>
+            <Price>N{props?.pricePerDay}</Price>
             <Sub>per day</Sub>
             <Button>Hire Now</Button>
     </Container>

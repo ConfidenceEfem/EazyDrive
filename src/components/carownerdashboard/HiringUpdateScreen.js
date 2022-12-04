@@ -1,12 +1,10 @@
-import axios from 'axios'
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-import { AiFillDelete } from 'react-icons/ai'
-import { useSelector } from 'react-redux'
 import styled from "styled-components"
+import {AiFillDelete} from "react-icons/ai"
+import { useSelector } from 'react-redux'
+import axios from 'axios'
 
-
-const DashboardScreen = () => {
+const HiringUpdateScreen = () => {
 
     const [data, setData] = useState([])
 
@@ -15,52 +13,21 @@ const DashboardScreen = () => {
     const getCarOwnerBookings = async () => {
         const res = await axios.get(`/api/one/owner/booking/${currentUserId}`)
         // console.log(res?.data?.data)
-        setData(res?.data?.data)
+        setData(res?.data?.data?.bookings)
     }
 
     useEffect(()=>{
         getCarOwnerBookings()
     })
+
   return (
-  <Container>
-    <Wrapper>
-        <ScreenTitle>Rental Dashboard</ScreenTitle>
-        <PerFormanceComp>
-            <Performance>Performance</Performance>
-            <PerformanceCardHolder>
-                <PerformanceCard>
-                  <CardWrapper>
-                  <TextContent>
-                        <Number cl="green">{data?.bookings?.length}</Number>
-                        <Label>Bookings since {moment(data?.createdAt).format("YYYY")}</Label>
-                    </TextContent>
-                    <Icon src="/images/home.png"/>
-                  </CardWrapper>
-                </PerformanceCard>
-                <PerformanceCard mr="30px" ml="30px">
-                  <CardWrapper>
-                  <TextContent>
-                        <Number cl="green">{data?.CarUpload?.length }</Number>
-                        <Label>Car Upload since {moment(data?.createdAt).format("YYYY")}</Label>
-                    </TextContent>
-                    <Icon src="/images/home.png"/>
-                  </CardWrapper>
-                </PerformanceCard>
-                <PerformanceCard>
-                  <CardWrapper>
-                  <TextContent>
-                        <Number cl="blue">10</Number>
-                        <Label>Hired since {moment(data?.createdAt).format("YYYY")}</Label>
-                    </TextContent>
-                    <Icon src="/images/exterior.png"/>
-                  </CardWrapper>
-                </PerformanceCard>
-            </PerformanceCardHolder>
-        </PerFormanceComp>
-        <RecentComp>
-            <Performance>Recent Car Bookings</Performance>
-            {data?.bookings?.length === 0? <DisplayText>No bookings yet ...</DisplayText>:
-            <BookingCardHolder>
+    <Container>
+        <Wrapper>
+        <TitleAndSub>
+            <Title>All Hiring Update</Title>     
+        </TitleAndSub>
+        {data?.length === 0 ? <DisplayText>No booking yet ...</DisplayText>: 
+        <BookingCardHolder>
                 <BookingCardHead>
                     <Booking>Booking</Booking>
                     <Subject>Subject</Subject>
@@ -69,8 +36,9 @@ const DashboardScreen = () => {
                     <Amount>Amount</Amount>
                 </BookingCardHead>
                 <BookingHolder>
-                    {data?.bookings?.map((props)=>(
-                             <BookingCard bg="white">
+                    
+                {data?.map((props)=>(
+                    <BookingCard >
                         <BookItem>
                             <Image src="/images/avatar.png"/>
                             <Name>Confidence Efem</Name>
@@ -85,20 +53,19 @@ const DashboardScreen = () => {
                             <AiFillDelete/>
                         </DeleteIcon>
                     </BookingCard>
-                    ))}
-               
-                  
+                ))}
+                    
                 </BookingHolder>
             </BookingCardHolder>}
-        </RecentComp>
-    </Wrapper>
-  </Container>
+        </Wrapper>
+    </Container>
   )
 }
 
-export default DashboardScreen
+export default HiringUpdateScreen
 
 const DisplayText = styled.div``
+
 const DeleteIcon = styled.div`
 color: rgb(255,0,0);
 /* margin-right: 10px; */
@@ -232,68 +199,22 @@ width: 100%;
 display:flex;
 flex-direction: column;
 `
-const RecentComp = styled.div``
-const Icon = styled.img`
-width: 60px;
-height: 60px;
-object-fit: contain;
-`
 
-const Label = styled.div`
-font-size: 12px;
-`
 
-const Number = styled.div`
-color: ${({cl})=>cl};
-font-size: 30px;
-margin-bottom: 5px;
-`
 
-const TextContent = styled.div``
 
-const CardWrapper = styled.div`
-width: 80%;
-display: flex;
-align-items: flex-end;
-justify-content: space-between;
-`
 
-const PerformanceCard = styled.div`
-width: 310px;
-height: 120px;
-background-color: white;
-border-radius: 10px;
-box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-right: ${({mr})=>mr};
-margin-left: ${({ml})=>ml};
-`
 
-const PerformanceCardHolder = styled.div`
-display: flex;
-align-items: center;
-flex-wrap: wrap;
-`
 
-const Performance = styled.div`
+const Title = styled.div`
+font-size: 18px;
 font-weight: 600;
-margin-bottom: 15px;
+margin-bottom: 7px;
 `
 
-const PerFormanceComp = styled.div`
-display:flex;
-flex-direction: column;
-margin-bottom: 60px;
-`
-
-const ScreenTitle = styled.div`
-font-size: 25px;
-color: gray;
+const TitleAndSub = styled.div`
 margin-top: 20px;
-margin-bottom: 40px;
-/* font-weight: lighter; */
+margin-bottom: 30px;
 `
 
 const Wrapper = styled.div`
@@ -311,3 +232,4 @@ width: calc(100% - 280px);
 justify-content: center;
 /* flex: 1; */
 `
+

@@ -1,16 +1,16 @@
 import React from 'react'
 import styled from "styled-components"
-import { AiFillAppstore, AiFillSetting, AiOutlineLogout, AiOutlineSwitcher, AiOutlineUpload, AiOutlineUser } from 'react-icons/ai'
+import { AiFillAppstore, AiFillSetting, AiOutlineLogout, AiOutlineSwitcher, AiOutlineUser } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const DashboardSideBar = () => {
+const HirerSideBar = () => {
 
     const currentuserId = useSelector((state)=>state?.persistedReducer?.currentUser?.data?._id)
 
   return (
     <Container>
-        <NavItem to={`/dashboard-carowner/${currentuserId}`}>
+        <NavItem to={`/dashboard-hirer/${currentuserId}`}>
             <NavAndIcon >
                 <NavIcon>
                     <AiFillAppstore/>
@@ -26,20 +26,13 @@ const DashboardSideBar = () => {
                 <Nav>KYC Verification</Nav>
             </NavAndIcon>
         </NavItem>
-        <NavItem to="/uploadcar-carowner">
-            <NavAndIcon>
-                <NavIcon>
-                    <AiOutlineUpload/>
-                </NavIcon>
-                <Nav>Upload Car for Hiring</Nav>
-            </NavAndIcon>
-        </NavItem>
-        <NavItem to="/hiringupdate-carowner">
+       
+        <NavItem to="/hiringupdate-hirer">
             <NavAndIcon>
                 <NavIcon>
                     <AiOutlineSwitcher/>
                 </NavIcon>
-                <Nav>Hiring Update</Nav>
+                <Nav>Booking Update</Nav>
             </NavAndIcon>
         </NavItem>
         <NavItem to="/displaycars-carowner">
@@ -47,7 +40,7 @@ const DashboardSideBar = () => {
                 <NavIcon>
                     <AiFillSetting/>
                 </NavIcon>
-                <Nav>Uploaded Cars</Nav>
+                <Nav>Settings</Nav>
             </NavAndIcon>
         </NavItem>
         <NavItem to="/">
@@ -62,7 +55,7 @@ const DashboardSideBar = () => {
   )
 }
 
-export default DashboardSideBar
+export default HirerSideBar
 
 
 
