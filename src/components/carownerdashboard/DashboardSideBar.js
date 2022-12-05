@@ -2,11 +2,18 @@ import React from 'react'
 import styled from "styled-components"
 import { AiFillAppstore, AiFillSetting, AiOutlineLogout, AiOutlineSwitcher, AiOutlineUpload, AiOutlineUser } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { addCurrentUser } from '../Redux/EarliReducers'
 
 const DashboardSideBar = () => {
 
     const currentuserId = useSelector((state)=>state?.persistedReducer?.currentUser?.data?._id)
+
+    const dispatch = useDispatch()
+
+    const logout = () => {
+        dispatch(addCurrentUser())
+    }
 
   return (
     <Container>
@@ -50,7 +57,7 @@ const DashboardSideBar = () => {
                 <Nav>Uploaded Cars</Nav>
             </NavAndIcon>
         </NavItem>
-        <NavItem to="/">
+        <NavItem to="/"  onClick={logout}>
             <NavAndIcon>
                 <NavIcon>
                     <AiOutlineLogout/>

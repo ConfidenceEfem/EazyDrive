@@ -1,19 +1,20 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from "styled-components"
 import Card from '../Card'
+import { AuthContext } from '../Redux/AuthProvider'
 
-const DisplayCarsScreen = () => {
+const HireCarScreen = () => {
 
   const [data, setData] = useState([])
 
-  const currentUserId = useSelector((state)=>state?.persistedReducer?.currentUser?.data?._id)
+  const {location} = useContext(AuthContext)
+
 
   const getCarOwnerCars = async () => {
-      const res = await axios.get(`/api/car/owner/${currentUserId}`)
-      // console.log(res?.data?.data?.CarUpload)
-      setData(res?.data?.data?.CarUpload)
+      const res = await axios.get(`/api/allCar`)
+    //   console.log(res?.data?.data)
+      setData(res?.data?.data)
   }
 
   useEffect(()=>{
@@ -24,14 +25,21 @@ const DisplayCarsScreen = () => {
     <Container>
         <Wrapper>
         <TitleAndSub>
-            <Title>My Uploaded Cars</Title>
+            <Title>All Cars</Title>
             
         </TitleAndSub>
         <CardHolder>
           {
-            data?.map((props)=>(
-           
-               <Card props={props}/>
+            data?.filter((e)=>{
+                if(location === ""){
+                  return e
+                }else if(e.city.toLowerCase().includes(location.toLowerCase())){
+                  return e
+                }
+              })?.map((props,i)=>(
+                
+           i<=8?
+               <Card props={props}/>: null
             ))
           }
            
@@ -42,7 +50,7 @@ const DisplayCarsScreen = () => {
   )
 }
 
-export default DisplayCarsScreen
+export default HireCarScreen
 
 
 const CardHolder = styled.div`

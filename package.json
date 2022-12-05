@@ -2,7 +2,7 @@
   "name": "mainreact",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:2022",
+  "proxy": "https://eazy-drive-server.vercel.app",
   "dependencies": {
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",

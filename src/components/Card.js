@@ -1,10 +1,26 @@
 import React from 'react'
 import styled from "styled-components"
 import {GoLocation} from "react-icons/go"
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-const Card = ({props}) => {
+const Card = ({props, cl}) => {
+
+  const navigate = useNavigate()
+
+  const token = useSelector((state)=>state?.persistedReducer?.currentUser?.token)  
+
+  const navigateToDetail = (id) => {
+    token? 
+    navigate(`/cardetails/${id}`): navigate(`/signin-hirer`)
+  }
+
   return (
-    <Container>
+    <Container onClick={()=>{
+      navigateToDetail(props?._id)
+    }}
+    cl={cl}
+    >
         <Image src={props?.carImage}/>
         <Model>{props?.carModel}</Model>
         <Location>
@@ -73,8 +89,9 @@ margin-bottom: 5px;
 
 const Container = styled.div`
 width: 300px;
+color: ${({cl})=>cl};
 height: 415px;
-/* background-color: red; */
+/* background-color: white; */
 /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
 display: flex;
 

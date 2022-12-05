@@ -1,17 +1,32 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components"
 import Card from './Card'
 
 const AboutPage = () => {
+
+  const [data, setData] = useState([])
+
+  const getAllCar = async () => {
+    const res = await axios.get(`/api/allCar`)
+    // console.log(res?.data?.data)
+    setData(res?.data?.data)
+  }
+
+  useEffect(()=>{
+getAllCar()
+  })
+
   return (
     <Container>
         <Wrapper>
             <Caption>Car Rental In all Local Goverment areas in Anambra</Caption>
             <CardHolder>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
+              {data?.map((props)=>(
+                <Card props={props}/>
+              ))}
+                
+                
             </CardHolder>
         </Wrapper>
     </Container>

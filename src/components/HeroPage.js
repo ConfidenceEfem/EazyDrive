@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
 import styled from "styled-components"
 import {GoLocation} from "react-icons/go"
+import ModalPage from './ModalPage'
 
 const HeroPage = () => {
 
     const [location, setLocation] = useState("")
 
+    const [modal, setModal] = useState(false)
+
    
 
   return (
-    <Container>
+    <MainContainer>
+        {modal? 
+        
+        <ModalPage toggle={modal} setToggle={setModal} location={location}/>
+        :null}
+        <Container>
         <ImageAndContent>
             <Image src={"/images/hero.jpg"}/>
             <Contents>
@@ -28,18 +36,24 @@ const HeroPage = () => {
                     }}
                     />
                     </InputandCircle>
-                    {location<" "?
+                    {location === ""?
                     <Button
                     style={{
                         backgroundColor: "lightgray",
                         cursor:"default"
                     }}
-                    >HIRE A CAR</Button>: <Button>HIRE A CAR</Button>}
+                    >HIRE A CAR</Button>: <Button
+                    onClick={()=>{
+                        setModal(!modal)
+                    }}
+                    >HIRE A CAR</Button>}
                     
                 </InputHolder>
             </Contents>
         </ImageAndContent>
     </Container>
+    </MainContainer>
+    
   )
 }
 
@@ -136,8 +150,15 @@ bottom: 0;
 /* margin-top: 20px; */
 `
 
+
 const Container = styled.div`
 width: 100%;
 height: calc(100vh - 90px);
 display:flex;
+`
+const MainContainer = styled.div`
+width: 100%;
+height: calc(100vh - 90px);
+display:flex;
+position: relative;
 `

@@ -2,11 +2,19 @@ import React from 'react'
 import styled from "styled-components"
 import { AiFillAppstore, AiFillSetting, AiOutlineLogout, AiOutlineSwitcher, AiOutlineUser } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { addCurrentUser } from '../Redux/EarliReducers'
 
 const HirerSideBar = () => {
 
     const currentuserId = useSelector((state)=>state?.persistedReducer?.currentUser?.data?._id)
+
+
+    const dispatch = useDispatch()
+
+    const logout = () => {
+        dispatch(addCurrentUser())
+    }
 
   return (
     <Container>
@@ -18,7 +26,7 @@ const HirerSideBar = () => {
                 <Nav>DashBoard</Nav>
             </NavAndIcon>
         </NavItem>
-        <NavItem to="/kyc-carowner">
+        <NavItem to="/kyc-hirer">
             <NavAndIcon>
                 <NavIcon>
                     <AiOutlineUser/>
@@ -26,7 +34,14 @@ const HirerSideBar = () => {
                 <Nav>KYC Verification</Nav>
             </NavAndIcon>
         </NavItem>
-       
+        <NavItem to="/displaycars-hirer">
+            <NavAndIcon>
+                <NavIcon>
+                    <AiFillSetting/>
+                </NavIcon>
+                <Nav>Hire a Car</Nav>
+            </NavAndIcon>
+        </NavItem>
         <NavItem to="/hiringupdate-hirer">
             <NavAndIcon>
                 <NavIcon>
@@ -35,15 +50,8 @@ const HirerSideBar = () => {
                 <Nav>Booking Update</Nav>
             </NavAndIcon>
         </NavItem>
-        <NavItem to="/displaycars-carowner">
-            <NavAndIcon>
-                <NavIcon>
-                    <AiFillSetting/>
-                </NavIcon>
-                <Nav>Settings</Nav>
-            </NavAndIcon>
-        </NavItem>
-        <NavItem to="/">
+       
+        <NavItem to="/" onClick={logout}>
             <NavAndIcon>
                 <NavIcon>
                     <AiOutlineLogout/>

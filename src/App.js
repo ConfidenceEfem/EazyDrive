@@ -13,16 +13,24 @@ import HiringUpdatePage from './components/carownerdashboard/HiringUpdatePage'
 import DisplayCarsPage from './components/carownerdashboard/DisplayCarsPage'
 import CarOwnerOtp from './components/CarOwnerOtp'
 import HirerDashPage from './components/hirerdashboard/HirerDashPage'
+import HirerKYCPage from './components/hirerdashboard/HirerKYCPage'
+import HirerBookUpdatePage from './components/hirerdashboard/HirerBookUpdatePage'
+import HireCarPage from './components/hirerdashboard/HireCarPage'
+import HireDetailPage from './components/hirerdashboard/HireDetailPage'
 
 const App = () => {
   return (
     <div>
       <Router>
         <Routes>
+          <Route path="/cardetails/:id" element={<HireDetailPage/>}/>
           <Route path="/displaycars-carowner" element={<DisplayCarsPage/>}/>
+          <Route path="/displaycars-hirer" element={<HireCarPage/>}/>
           <Route path="/hiringupdate-carowner" element={<HiringUpdatePage/>}/>
+          <Route path="/hiringupdate-hirer" element={<HirerBookUpdatePage/>}/>
           <Route path="/uploadcar-carowner" element={<UploadCarPage/>}/>
           <Route path="/kyc-carowner" element={<KYCPage/>}/>
+          <Route path="/kyc-hirer" element={<HirerKYCPage/>}/>
           <Route path="/dashboard-carowner/:id" element={<DashboardScreenPage/>}/>
           <Route path="/dashboard-hirer/:id" element={<HirerDashPage/>}/>
           <Route path="/otpverify-carowner" element={<CarOwnerOtp/>}/>

@@ -4,11 +4,16 @@ import React, { useEffect, useState } from 'react'
 import { AiFillDelete } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 import styled from "styled-components"
+import Swal from 'sweetalert2'
+import { ErrorFunction } from '../Error'
+import CarNameAndDriver from './CarNameAndDriver'
+import HirerImageAndName from './HirerImageAndName'
 
 
 const DashboardScreen = () => {
 
     const [data, setData] = useState([])
+
 
     const currentUserId = useSelector((state)=>state?.persistedReducer?.currentUser?.data?._id)
 
@@ -16,6 +21,57 @@ const DashboardScreen = () => {
         const res = await axios.get(`/api/one/owner/booking/${currentUserId}`)
         // console.log(res?.data?.data)
         setData(res?.data?.data)
+    }
+
+    const acceptRequest = async (id) => {
+        try {
+           
+                const res = await axios.post(`/api/accept/booking/${id}`)
+                if(res){
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: `Booking Completed`,
+                        text: "Please endeavour to be at the pick up location on time",
+                        showConfirmButton: false,
+                        timer: 3000,
+                      })
+                }
+            
+        } catch (error) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `${ErrorFunction(error)}`,
+                showConfirmButton: false,
+                timer: 2500,
+              });
+        }
+    }
+
+    const declineRequest = async (id) => {
+        try {
+           
+                const res = await axios.post(`/api/decline/booking/${id}`)
+                if(res){
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: `Booking Declined Completely`,
+                        showConfirmButton: false,
+                        timer: 3000,
+                      })
+                }
+            
+        } catch (error) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `${ErrorFunction(error)}`,
+                showConfirmButton: false,
+                timer: 2500,
+              });
+        }
     }
 
     useEffect(()=>{
@@ -40,17 +96,17 @@ const DashboardScreen = () => {
                 <PerformanceCard mr="30px" ml="30px">
                   <CardWrapper>
                   <TextContent>
-                        <Number cl="green">{data?.CarUpload?.length }</Number>
+                        <Number cl="red">{data?.CarUpload?.length }</Number>
                         <Label>Car Upload since {moment(data?.createdAt).format("YYYY")}</Label>
                     </TextContent>
-                    <Icon src="/images/home.png"/>
+                    <Icon src="/images/caricon.png"/>
                   </CardWrapper>
                 </PerformanceCard>
                 <PerformanceCard>
                   <CardWrapper>
                   <TextContent>
-                        <Number cl="blue">10</Number>
-                        <Label>Hired since {moment(data?.createdAt).format("YYYY")}</Label>
+                        <Number cl="blue">{data?.verified? "100%": "50%"}</Number>
+                        <Label>Complete Profile </Label>
                     </TextContent>
                     <Icon src="/images/exterior.png"/>
                   </CardWrapper>
@@ -69,22 +125,34 @@ const DashboardScreen = () => {
                     <Amount>Amount</Amount>
                 </BookingCardHead>
                 <BookingHolder>
-                    {data?.bookings?.map((props)=>(
-                             <BookingCard bg="white">
-                        <BookItem>
-                            <Image src="/images/avatar.png"/>
-                            <Name>Confidence Efem</Name>
-                        </BookItem>
-                        <SubjectItem>Red Toyota Camery</SubjectItem>
+                    {data?.bookings?.map((props,i)=>(
+                        i<3 && props?.declineOffer === false?
+                             <BookingCard bg={i % 2 === 0? "white" : "lightgray"} key={props?._id}>
+                      
+                        <HirerImageAndName id={props?.hirerId}/>
+                        <CarNameAndDriver carId={props?.carId} driver={props?.driverNeeded}/>
                         <ButtonHold>
-                            <Button bg="green">Accept</Button>
+                            {props?.acceptOffer === false? 
+                            <Button bg="green"
+                            onClick={()=>{
+                                acceptRequest(props?._id)
+                            }}
+                            >Accept</Button>:
+                            <Button 
+                            style={{color: "green"}}
+                            >Accepted</Button>}
                         </ButtonHold>
-                        <DateHolder>26 Sept 2022</DateHolder>
-                        <AmountHolder>N5000</AmountHolder>
-                        <DeleteIcon>
+                        <DateHolder>{moment(props?.date).format("dd DD MM YYYY")}</DateHolder>
+                        <AmountHolder>N{props?.totalPrice}</AmountHolder>
+                        {
+                            props?.acceptOffer === false? 
+                        
+                        <DeleteIcon onClick={()=>{
+                            declineRequest(props?._id)
+                        }}>
                             <AiFillDelete/>
-                        </DeleteIcon>
-                    </BookingCard>
+                        </DeleteIcon>:null}
+                    </BookingCard>: null
                     ))}
                
                   
@@ -146,32 +214,11 @@ width: 200px;
 /* background-color: purple; */
 `
 
-const SubjectItem = styled.div`
-width: 270px;
-font-size: 12px;
-/* background-color: purple; */
-`
-
-const Name = styled.div`
-font-size: 12px;
-font-weight: 500;
-`
-
-const Image = styled.img`
-width: 25px;
-height: 25px;
-border-radius: 50%;
-object-fit: cover;
-margin-right: 8px;
-margin-left: 5px;
-`
-
-const BookItem = styled.div`
-display:flex;
-align-items: center;
-width: 200px;
-/* background-color: green; */
-`
+// const SubjectItem = styled.div`
+// width: 270px;
+// font-size: 12px;
+// /* background-color: purple; */
+// `
 
 const BookingCard = styled.div`
 width: auto;

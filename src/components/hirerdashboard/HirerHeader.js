@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {BiSearch} from "react-icons/bi"
 import { AiOutlineMore, AiTwotoneBell } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import { AuthContext } from '../Redux/AuthProvider'
 
 const HirerHeader = () => {
 
     const [data, setData] = useState([])
 
+    const {location, setLocation} = useContext(AuthContext)
+
+
     const currentUserName = useSelector((state)=>state?.persistedReducer?.currentUser?.data?.fullName)
     const currentUserId = useSelector((state)=>state?.persistedReducer?.currentUser?.data?._id)
 
     const getOneUser = async () => {
-        const res = await axios.get(`/api/one/owner/${currentUserId}`)
+        const res = await axios.get(`/api/one/hirer/${currentUserId}`)
         // console.log(res)
         setData(res?.data?.data)
     }
@@ -33,7 +37,13 @@ const HirerHeader = () => {
                     <SearchIcon>
                         <BiSearch/>
                     </SearchIcon>
-                    <Input placeholder="Type in to Search for cars in any city..."/>
+                    <Input placeholder="Type in to Search for cars in any city..."
+                    value={location}
+                    onChange={(e)=>{
+                        setLocation(e.target.value)
+                    }}
+                    />
+                    
                 </SearchHolder>
             </LeftItems>
             <RightItems>

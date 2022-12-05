@@ -3,6 +3,11 @@ import styled from "styled-components"
 import {AiFillDelete} from "react-icons/ai"
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import Swal from 'sweetalert2'
+import { ErrorFunction } from '../Error'
+import HirerImageAndName from './HirerImageAndName'
+import CarNameAndDriver from './CarNameAndDriver'
+import moment from 'moment'
 
 const HiringUpdateScreen = () => {
 
@@ -14,6 +19,57 @@ const HiringUpdateScreen = () => {
         const res = await axios.get(`/api/one/owner/booking/${currentUserId}`)
         // console.log(res?.data?.data)
         setData(res?.data?.data?.bookings)
+    }
+
+    const acceptRequest = async (id) => {
+        try {
+           
+                const res = await axios.post(`/api/accept/booking/${id}`)
+                if(res){
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: `Booking Completed`,
+                        text: "Please endeavour to be at the pick up location on time",
+                        showConfirmButton: false,
+                        timer: 3000,
+                      })
+                }
+            
+        } catch (error) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `${ErrorFunction(error)}`,
+                showConfirmButton: false,
+                timer: 2500,
+              });
+        }
+    }
+
+    const declineRequest = async (id) => {
+        try {
+           
+                const res = await axios.post(`/api/decline/booking/${id}`)
+                if(res){
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: `Booking Declined Completely`,
+                        showConfirmButton: false,
+                        timer: 3000,
+                      })
+                }
+            
+        } catch (error) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `${ErrorFunction(error)}`,
+                showConfirmButton: false,
+                timer: 2500,
+              });
+        }
     }
 
     useEffect(()=>{
@@ -36,25 +92,37 @@ const HiringUpdateScreen = () => {
                     <Amount>Amount</Amount>
                 </BookingCardHead>
                 <BookingHolder>
-                    
-                {data?.map((props)=>(
-                    <BookingCard >
-                        <BookItem>
-                            <Image src="/images/avatar.png"/>
-                            <Name>Confidence Efem</Name>
-                        </BookItem>
-                        <SubjectItem>Red Toyota Camery</SubjectItem>
+                    {data?.map((props,i)=>(
+                        i<3 && props?.declineOffer === false?
+                             <BookingCard bg={i % 2 === 0? "white" : "lightgray"} key={props?._id}>
+                      
+                        <HirerImageAndName id={props?.hirerId}/>
+                        <CarNameAndDriver carId={props?.carId} driver={props?.driverNeeded}/>
                         <ButtonHold>
-                            <Button bg="green">Accept</Button>
+                            {props?.acceptOffer === false? 
+                            <Button bg="green"
+                            onClick={()=>{
+                                acceptRequest(props?._id)
+                            }}
+                            >Accept</Button>:
+                            <Button 
+                            style={{color: "green"}}
+                            >Accepted</Button>}
                         </ButtonHold>
-                        <DateHolder>26 Sept 2022</DateHolder>
-                        <AmountHolder>N5000</AmountHolder>
-                        <DeleteIcon>
+                        <DateHolder>{moment(props?.date).format("dd DD MM YYYY")}</DateHolder>
+                        <AmountHolder>N{props?.totalPrice}</AmountHolder>
+                        {
+                            props?.acceptOffer === false? 
+                        
+                        <DeleteIcon onClick={()=>{
+                            declineRequest(props?._id)
+                        }}>
                             <AiFillDelete/>
-                        </DeleteIcon>
-                    </BookingCard>
-                ))}
-                    
+                        </DeleteIcon>:null}
+                    </BookingCard>: null
+                    ))}
+               
+                  
                 </BookingHolder>
             </BookingCardHolder>}
         </Wrapper>
@@ -113,32 +181,6 @@ width: 200px;
 /* background-color: purple; */
 `
 
-const SubjectItem = styled.div`
-width: 270px;
-font-size: 12px;
-/* background-color: purple; */
-`
-
-const Name = styled.div`
-font-size: 12px;
-font-weight: 500;
-`
-
-const Image = styled.img`
-width: 25px;
-height: 25px;
-border-radius: 50%;
-object-fit: cover;
-margin-right: 8px;
-margin-left: 5px;
-`
-
-const BookItem = styled.div`
-display:flex;
-align-items: center;
-width: 200px;
-/* background-color: green; */
-`
 
 const BookingCard = styled.div`
 width: auto;

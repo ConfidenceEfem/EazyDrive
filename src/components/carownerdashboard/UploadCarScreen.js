@@ -89,8 +89,9 @@ const UploadCarScreen = () => {
                     showConfirmButton: false,
                     timer: 2500,
                   }).then(() => {
-                    navigate(`/uploadcar-carowner`);
+                    // navigate(`/uploadcar-carowner`);
                   });
+                  navigate(`/uploadcar-carowner`);
             }
         } catch (error) {
             setLoading(false)

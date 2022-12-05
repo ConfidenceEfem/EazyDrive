@@ -7,15 +7,19 @@ import { store } from './components/Redux/EarliStore';
 import { Provider } from 'react-redux';
 import persistStore from 'redux-persist/es/persistStore';
 import { PersistGate } from 'redux-persist/integration/react';
+import AuthProvider from './components/Redux/AuthProvider';
 
 let persistor = persistStore(store);
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <AuthProvider>
+      <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
           <App />
       </PersistGate>
     </Provider>
+    </AuthProvider>
+    
    
   </React.StrictMode>,
   document.getElementById('root')

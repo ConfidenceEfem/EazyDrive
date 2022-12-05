@@ -1,13 +1,11 @@
-import axios from 'axios'
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-// import { AiFillDelete } from 'react-icons/ai'
-import { useSelector } from 'react-redux'
 import styled from "styled-components"
+import { useSelector } from 'react-redux'
+import axios from 'axios'
 import ImageAndModel from './ImageAndModel'
+import moment from 'moment'
 
-
-const HirerDashScreen = () => {
+const BookingUpdateScreen = () => {
 
     const [data, setData] = useState([])
 
@@ -15,54 +13,21 @@ const HirerDashScreen = () => {
 
     const getCarOwnerBookings = async () => {
         const res = await axios.get(`/api/one/hirer/hiredCars/${currentUserId}`)
-        console.log(res?.data?.data)
+        // console.log(res?.data?.data)
         setData(res?.data?.data)
     }
-
-   
 
     useEffect(()=>{
         getCarOwnerBookings()
     })
+
   return (
-  <Container>
-    <Wrapper>
-        <ScreenTitle>Rental Dashboard</ScreenTitle>
-        <PerFormanceComp>
-            <Performance>Performance</Performance>
-            <PerformanceCardHolder>
-                <PerformanceCard>
-                  <CardWrapper>
-                  <TextContent>
-                        <Number cl="green">{data?.hiredCars?.length}</Number>
-                        <Label>Hiring since {moment(data?.createdAt).format("YYYY")}</Label>
-                    </TextContent>
-                    <Icon src="/images/home.png"/>
-                  </CardWrapper>
-                </PerformanceCard>
-                <PerformanceCard mr="30px" ml="30px">
-                  <CardWrapper>
-                  <TextContent>
-                        <Number cl="red">{data?.hiredCars?.length }</Number>
-                        <Label>Hiring Upload since {moment(data?.createdAt).format("YYYY")}</Label>
-                    </TextContent>
-                    <Icon src="/images/caricon.png"/>
-                  </CardWrapper>
-                </PerformanceCard>
-                <PerformanceCard>
-                  <CardWrapper>
-                  <TextContent>
-                        <Number cl="blue">{data?.verified === false? "50%" : "100%"}</Number>
-                        <Label>Complete Profile </Label>
-                    </TextContent>
-                    <Icon src="/images/exterior.png"/>
-                  </CardWrapper>
-                </PerformanceCard>
-            </PerformanceCardHolder>
-        </PerFormanceComp>
-        <RecentComp>
-            <Performance>Recent Car Hiring</Performance>
-            {data?.hiredCars?.length === 0? <DisplayText>No Hiring yet ...</DisplayText>:
+    <Container>
+        <Wrapper>
+        <TitleAndSub>
+            <Title>All Hiring Update</Title>     
+        </TitleAndSub>
+        {data?.hiredCars?.length === 0? <DisplayText>No Hiring yet ...</DisplayText>:
             <BookingCardHolder>
                 <BookingCardHead>
                     <Booking>Booking</Booking>
@@ -73,7 +38,6 @@ const HirerDashScreen = () => {
                 </BookingCardHead>
                 <BookingHolder>
                     {data?.hiredCars?.map((props,i)=>(
-                        i<3?
                              <BookingCard 
                              key={props?._id}
                              bg={i % 2 === 0? "white": "lightgray"}
@@ -99,31 +63,22 @@ const HirerDashScreen = () => {
                         {/* <DeleteIcon>
                             <AiFillDelete/>
                         </DeleteIcon> */}
-                    </BookingCard>:null
+                    </BookingCard>
                     ))}
                
                   
                 </BookingHolder>
             </BookingCardHolder>}
-        </RecentComp>
-    </Wrapper>
-  </Container>
+        </Wrapper>
+    </Container>
   )
 }
 
-export default HirerDashScreen
+export default BookingUpdateScreen
 
 const DisplayText = styled.div``
 
-// const DeleteIcon = styled.div`
-// color: rgb(255,0,0);
-// /* margin-right: 10px; */
-// cursor: pointer;
-// transition: all 660ms;
-// :hover{
-//     transform: scale(1.02);
-// }
-// `
+
 
 const AmountHolder = styled.div`
 width: 150px;
@@ -151,10 +106,10 @@ justify-content: center;
 align-items: center;
 border-radius: 5px;
 cursor: pointer;
-/* transition: all 660ms;
+transition: all 660ms;
 :hover{
     transform: scale(1.02);
-} */
+}
 `
 
 const ButtonHold = styled.div`
@@ -167,6 +122,7 @@ width: 270px;
 font-size: 12px;
 /* background-color: purple; */
 `
+
 
 
 const BookingCard = styled.div`
@@ -228,68 +184,22 @@ width: 100%;
 display:flex;
 flex-direction: column;
 `
-const RecentComp = styled.div``
-const Icon = styled.img`
-width: 60px;
-height: 60px;
-object-fit: contain;
-`
 
-const Label = styled.div`
-font-size: 12px;
-`
 
-const Number = styled.div`
-color: ${({cl})=>cl};
-font-size: 30px;
-margin-bottom: 5px;
-`
 
-const TextContent = styled.div``
 
-const CardWrapper = styled.div`
-width: 80%;
-display: flex;
-align-items: flex-end;
-justify-content: space-between;
-`
 
-const PerformanceCard = styled.div`
-width: 310px;
-height: 120px;
-background-color: white;
-border-radius: 10px;
-box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-right: ${({mr})=>mr};
-margin-left: ${({ml})=>ml};
-`
 
-const PerformanceCardHolder = styled.div`
-display: flex;
-align-items: center;
-flex-wrap: wrap;
-`
 
-const Performance = styled.div`
+const Title = styled.div`
+font-size: 18px;
 font-weight: 600;
-margin-bottom: 15px;
+margin-bottom: 7px;
 `
 
-const PerFormanceComp = styled.div`
-display:flex;
-flex-direction: column;
-margin-bottom: 60px;
-`
-
-const ScreenTitle = styled.div`
-font-size: 25px;
-color: gray;
+const TitleAndSub = styled.div`
 margin-top: 20px;
-margin-bottom: 40px;
-/* font-weight: lighter; */
+margin-bottom: 30px;
 `
 
 const Wrapper = styled.div`
@@ -307,3 +217,4 @@ width: calc(100% - 280px);
 justify-content: center;
 /* flex: 1; */
 `
+
